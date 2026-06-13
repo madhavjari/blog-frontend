@@ -1,0 +1,141 @@
+.page {
+  min-height: 100vh;
+  padding: 2rem 1.25rem;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(180deg, #f8fafc 0%, #eef5f2 52%, #e7eef8 100%);
+  color: #0f172a;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.card {
+  width: min(460px, 100%);
+  padding: 1.75rem;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow:
+    0 24px 60px rgba(15, 23, 42, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(14px);
+  box-sizing: border-box;
+}
+
+.header {
+  display: grid;
+  gap: 0.6rem;
+  margin-bottom: 1.4rem;
+}
+
+.eyebrow {
+  width: fit-content;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.1);
+  color: #1d4ed8;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0;
+  font-size: 2.35rem;
+  line-height: 1.08;
+  letter-spacing: 0;
+}
+
+.subtitle {
+  margin: 0;
+  color: #475569;
+  line-height: 1.6;
+}
+
+.form {
+  display: grid;
+  gap: 1rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.label {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+.input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.92rem 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 8px;
+  background: rgba(248, 250, 252, 0.95);
+  color: #0f172a;
+  font: inherit;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: rgba(37, 99, 235, 0.7);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.14);
+}
+
+.button {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 0.25rem;
+  padding: 0.95rem 1.1rem;
+  border: 0;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #1d4ed8, #15803d);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.22);
+}
+
+.button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 36px rgba(37, 99, 235, 0.28);
+}
+
+.button:disabled {
+  opacity: 0.72;
+  cursor: not-allowed;
+}
+
+.error {
+  margin: 0 0 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(239, 68, 68, 0.22);
+  border-radius: 8px;
+  background: rgba(254, 242, 242, 0.92);
+  color: #b91c1c;
+  line-height: 1.5;
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 1.35rem;
+    border-radius: 10px;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+}
