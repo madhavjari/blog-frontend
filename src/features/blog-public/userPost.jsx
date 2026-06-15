@@ -10,7 +10,6 @@ export default function UserPost() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const token = localStorage.getItem("token");
-
   useEffect(() => {
     fetch(
       `https://blog-backend-production-e9b5.up.railway.app/api/posts/user/${username}`,
