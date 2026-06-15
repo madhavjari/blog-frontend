@@ -21,7 +21,15 @@ function App() {
       <nav>
         <Link to={`/${username}`}>My Profile</Link>
       </nav>
-      <h3>Welcome {username}!</h3>
+      {username === null ? (
+        <>
+          <h3>Welcome!</h3>
+        </>
+      ) : (
+        <>
+          <h3>Welcome, {username}!</h3>
+        </>
+      )}
       <AllPost />
     </>
   );
