@@ -8,6 +8,7 @@ function AllPost() {
   const [posts, setPosts] = useState([]);
   useEffect(() => {
     fetch("https://blog-backend-production-e9b5.up.railway.app/api/posts", {
+      method: "GET",
       headers: {
         "User-agent": "owner",
       },
@@ -64,6 +65,7 @@ function AllPost() {
               posts.map((post) => {
                 return (
                   <article key={post.id} className={styles.postCard}>
+                    <p>{post.user.username}</p>
                     <h2 className={styles.postCardTitle}>{post.title}</h2>
                     <p className={styles.postCardContent}>{post.content}</p>
                     <p className={styles.postMeta}>

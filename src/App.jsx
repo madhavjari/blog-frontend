@@ -18,15 +18,16 @@ function App() {
   return (
     <>
       <h2>Madhav's Blog</h2>
-      <nav>
-        <Link to={`/${username}`}>My Profile</Link>
-      </nav>
+
       {username === null ? (
         <>
           <h3>Welcome!</h3>
         </>
       ) : (
         <>
+          <nav>
+            <Link to={`/${username}`}>My Profile</Link>
+          </nav>
           <h3>Welcome, {username}!</h3>
         </>
       )}

@@ -6,6 +6,7 @@ import LoginForm from "./features/auth/loginForm.jsx";
 import "./index.css";
 import App from "./App.jsx";
 import UserPost from "./features/blog-public/userPost.jsx";
+import UniquePost from "./features/blog-public/uniquePost.jsx";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
   {
     path: "/:username",
     element: <UserPost />,
+  },
+  {
+    path: "/posts/:id",
+    element: <UniquePost />,
   },
 ]);
 
