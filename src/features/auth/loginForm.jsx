@@ -88,6 +88,9 @@ export default function LoginForm() {
               name="username"
               id="username"
               value={username}
+              required
+              max={30}
+              min={2}
               onChange={(e) => setUsername(e.target.value)}
             />
           </div>
@@ -101,6 +104,9 @@ export default function LoginForm() {
               name="password"
               id="password"
               value={password}
+              max={15}
+              min={8}
+              required
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
