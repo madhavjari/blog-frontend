@@ -54,12 +54,10 @@ export default function UserPost() {
     <div className={styles.page}>
       <div className={styles.shell}>
         <section className={styles.hero}>
-          <p className={styles.eyebrow}>User Portfolio</p>
-          <h1 className={styles.title}>
-            Welcome to {username}&apos;s Blog Space
-          </h1>
+          <p className={styles.eyebrow}>Author Archive</p>
+          <h1 className={styles.title}>{username}&apos;s posts</h1>
           <p className={styles.subtitle}>
-            A curated view of all posts written by this user.
+            All published writing from this author.
           </p>
         </section>
         <section className={styles.postsGrid}>
@@ -70,14 +68,18 @@ export default function UserPost() {
           ) : (
             posts.map((post) => (
               <article key={post.id} className={styles.postCard}>
-                <p>{username}</p>
+                <div className={styles.postHeader}>
+                  <Link className={styles.postAuthor} to={`/${username}`}>
+                    {username}
+                  </Link>
+                  <time className={styles.postTime}>
+                    {formatRelativeTime(post.timestamp)}
+                  </time>
+                </div>
                 <Link to={`/posts/${post.id}`}>
                   <h2 className={styles.postCardTitle}>{post.title}</h2>
                 </Link>
                 <p className={styles.postCardContent}>{post.content}</p>
-                <p className={styles.postMeta}>
-                  {formatRelativeTime(post.timestamp)}
-                </p>
               </article>
             ))
           )}

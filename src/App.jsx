@@ -16,23 +16,28 @@ function App() {
     }
   }
   return (
-    <>
-      <h2>Madhav's Blog</h2>
-
-      {username === null ? (
-        <>
-          <h3>Welcome!</h3>
-        </>
-      ) : (
-        <>
-          <nav>
-            <Link to={`/${username}`}>My Profile</Link>
-          </nav>
-          <h3>Welcome, {username}!</h3>
-        </>
-      )}
+    <div className="appShell">
+      <header className="siteHeader">
+        <Link className="siteBrand" to="/">
+          Madhav&apos;s Blog
+        </Link>
+        <nav className="siteNav" aria-label="Primary navigation">
+          {username === null ? (
+            <Link className="navLink navAction" to="/login">
+              Login
+            </Link>
+          ) : (
+            <>
+              <span className="welcomeText">Welcome, {username}</span>
+              <Link className="navLink navAction" to={`/${username}`}>
+                My Profile
+              </Link>
+            </>
+          )}
+        </nav>
+      </header>
       <AllPost />
-    </>
+    </div>
   );
 }
 

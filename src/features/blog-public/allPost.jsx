@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import styles from "./post.module.css";
 import formatRelativeTime from "../../config/timestamp";
+import { Link } from "react-router";
 
 function AllPost() {
   const [error, setError] = useState(null);
@@ -50,10 +51,10 @@ function AllPost() {
       <div className={styles.page}>
         <div className={styles.shell}>
           <section className={styles.hero}>
-            <p className={styles.eyebrow}>Public Feed</p>
-            <h1 className={styles.title}>Latest stories from the blog</h1>
+            <p className={styles.eyebrow}>Blog Feed</p>
+            <h1 className={styles.title}>Latest posts</h1>
             <p className={styles.subtitle}>
-              Browse through recent posts in a polished, card-based layout.
+              Recent writing from everyone on the blog.
             </p>
           </section>
           <section className={styles.postsGrid}>
@@ -63,14 +64,22 @@ function AllPost() {
               </div>
             ) : (
               posts.map((post) => {
+                const author = post.user?.username || "Unknown author";
+
                 return (
                   <article key={post.id} className={styles.postCard}>
-                    <p>{post.user.username}</p>
-                    <h2 className={styles.postCardTitle}>{post.title}</h2>
+                    <div className={styles.postHeader}>
+                      <Link className={styles.postAuthor} to={`/${author}`}>
+                        {author}
+                      </Link>
+                      <time className={styles.postTime}>
+                        {formatRelativeTime(post.timestamp)}
+                      </time>
+                    </div>
+                    <Link to={`/posts/${post.id}`}>
+                      <h2 className={styles.postCardTitle}>{post.title}</h2>
+                    </Link>
                     <p className={styles.postCardContent}>{post.content}</p>
-                    <p className={styles.postMeta}>
-                      {formatRelativeTime(post.timestamp)}
-                    </p>
                   </article>
                 );
               })
