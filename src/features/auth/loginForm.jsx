@@ -1,11 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./auth.module.css";
+import { Link } from "react-router";
 
 export default function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [checkLogin, setCheckLogin] = useState("");
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+    fetch(
+      "https://blog-backend-production-e9b5.up.railway.app/api/auth/login",
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    )
+      .then((response) => {
+        if (response.status === 404) {
+          setCheckLogin("Already logged in");
+        }
+        return response.json();
+      })
+      .catch((err) => {
+        setError(err);
+      })
+      .finally(() => setLoading(false));
+  }, [token, error]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -34,6 +58,14 @@ export default function LoginForm() {
       setLoading(false);
     }
   };
+  if (checkLogin === "Already logged in") {
+    return (
+      <>
+        <p className={styles.error}>{checkLogin}</p>
+        <Link to={`/`}>Go back</Link>
+      </>
+    );
+  }
   return (
     <div className={styles.page}>
       <div className={styles.card}>

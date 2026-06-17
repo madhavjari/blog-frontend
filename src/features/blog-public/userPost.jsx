@@ -11,7 +11,6 @@ export default function UserPost() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const token = localStorage.getItem("token");
-  console.log(username);
   useEffect(() => {
     const fetchOptions = {
       method: "GET",
@@ -29,8 +28,6 @@ export default function UserPost() {
         return res.json();
       })
       .then((data) => {
-        console.log("user1", data.username);
-        console.log(data);
         setPosts(data.userPost || []);
       })
       .catch((err) => setError(err.message))
