@@ -51,19 +51,23 @@ export default function UniquePost() {
     );
   const author = post.user?.username || "Unknown author";
   return (
-    <article key={post.id} className={styles.postCard}>
-      <div className={styles.postHeader}>
-        <Link className={styles.postAuthor} to={`/${author}`}>
-          {author}
-        </Link>
-        <time className={styles.postTime}>
-          {formatRelativeTime(post.timestamp)}
-        </time>
+    <div className={styles.page}>
+      <div className={styles.shell}>
+        <article key={post.id} className={styles.postCard}>
+          <div className={styles.postHeader}>
+            <Link className={styles.postAuthor} to={`/${author}`}>
+              {author}
+            </Link>
+            <time className={styles.postTime}>
+              {formatRelativeTime(post.timestamp)}
+            </time>
+          </div>
+          <Link to={`/posts/${post.id}`}>
+            <h2 className={styles.postCardTitle}>{post.title}</h2>
+          </Link>
+          <p className={styles.postCardContent}>{post.content}</p>
+        </article>
       </div>
-      <Link to={`/posts/${post.id}`}>
-        <h2 className={styles.postCardTitle}>{post.title}</h2>
-      </Link>
-      <p className={styles.postCardContent}>{post.content}</p>
-    </article>
+    </div>
   );
 }

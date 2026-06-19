@@ -72,9 +72,18 @@ export default function UserPost() {
                   <Link className={styles.postAuthor} to={`/${username}`}>
                     {username}
                   </Link>
-                  <time className={styles.postTime}>
-                    {formatRelativeTime(post.timestamp)}
-                  </time>
+                  {post.published ? (
+                    <time className={styles.postTime}>
+                      {formatRelativeTime(post.timestamp)}
+                    </time>
+                  ) : (
+                    <div className={styles.postUnpublished}>
+                      <p className={styles.postTime}>Unpublished</p>
+                      <time className={styles.postTime}>
+                        {formatRelativeTime(post.timestamp)}
+                      </time>
+                    </div>
+                  )}
                 </div>
                 <Link to={`/posts/${post.id}`}>
                   <h2 className={styles.postCardTitle}>{post.title}</h2>
