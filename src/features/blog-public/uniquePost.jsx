@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import styles from "./post.module.css";
 import formatRelativeTime from "../../config/timestamp";
+import { Link } from "react-router";
 
 export default function UniquePost() {
   const { id } = useParams();
@@ -26,7 +27,7 @@ export default function UniquePost() {
         return response.json();
       })
       .then((data) => {
-        setPost(data || []);
+        setPost(data.post || []);
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
@@ -48,11 +49,21 @@ export default function UniquePost() {
         </div>
       </div>
     );
+  const author = post.user?.username || "Unknown author";
   return (
-    <article>
-      <h2 className={styles.postCardTitle}>{post.title}</h2>
+    <article key={post.id} className={styles.postCard}>
+      <div className={styles.postHeader}>
+        <Link className={styles.postAuthor} to={`/${author}`}>
+          {author}
+        </Link>
+        <time className={styles.postTime}>
+          {formatRelativeTime(post.timestamp)}
+        </time>
+      </div>
+      <Link to={`/posts/${post.id}`}>
+        <h2 className={styles.postCardTitle}>{post.title}</h2>
+      </Link>
       <p className={styles.postCardContent}>{post.content}</p>
-      <p className={styles.postMeta}>{formatRelativeTime(post.timeStamp)}</p>
     </article>
   );
 }
