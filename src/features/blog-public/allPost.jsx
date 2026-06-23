@@ -2,11 +2,14 @@ import { useState, useEffect } from "react";
 import styles from "./post.module.css";
 import formatRelativeTime from "../../config/timestamp";
 import { Link } from "react-router";
+import useAuth from "../../config/useAuth";
 
 function AllPost() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState([]);
+  const { accessToken } = useAuth();
+  console.log(accessToken);
   useEffect(() => {
     fetch("https://blog-backend-production-e9b5.up.railway.app/api/posts", {
       method: "GET",
