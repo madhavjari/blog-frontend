@@ -5,7 +5,7 @@ import useAuth from "./config/useAuth";
 import { useEffect } from "react";
 
 function App() {
-  const { setAccessToken } = useAuth();
+  const { accessToken, setAccessToken } = useAuth();
   useEffect(() => {
     async function refresh() {
       try {
@@ -30,8 +30,8 @@ function App() {
   }, []);
   return (
     <div className="appShell">
-      <Navbar />
-      <Outlet />
+      <Navbar accessToken={accessToken} setAccessToken={setAccessToken} />
+      <Outlet context={{ accessToken }} />
     </div>
   );
 }

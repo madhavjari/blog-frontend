@@ -3,19 +3,19 @@ import { useEffect, useState } from "react";
 import styles from "./post.module.css";
 import formatRelativeTime from "../../config/timestamp";
 import { Link } from "react-router";
+import { useOutletContext } from "react-router";
 
 export default function UserPost() {
   const { username } = useParams();
-
+  const { accessToken } = useOutletContext();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const token = localStorage.getItem("token");
   useEffect(() => {
     const fetchOptions = {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     };
 
@@ -29,10 +29,11 @@ export default function UserPost() {
       })
       .then((data) => {
         setPosts(data.userPost || []);
+        setError(null);
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, [username, token]);
+  }, [username, accessToken]);
   if (loading)
     return (
       <div className={styles.loaderContainer}>

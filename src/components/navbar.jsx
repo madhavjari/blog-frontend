@@ -1,25 +1,34 @@
 import "../App.css";
 import { Link } from "react-router";
-import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import checkUser from "../config/checkUser";
 
-export default function Navbar() {
-  const token = localStorage.getItem("token");
-  let username = null;
+export default function Navbar({ accessToken, setAccessToken }) {
   const navigate = useNavigate();
-  if (token) {
+  const username = checkUser(accessToken);
+
+  const handleLogout = async () => {
     try {
-      const decoded = jwtDecode(token);
-      username = decoded.username;
-    } catch (error) {
-      console.error("Invalid token:", error);
-      localStorage.removeItem("token");
+      const response = await fetch(
+        "https://blog-backend-production-e9b5.up.railway.app/api/auth/logout",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-type": "application/json",
+          },
+        },
+      );
+      if (!response.ok) {
+        throw new Error("Invalid request");
+      }
+      alert("Logged out successful!");
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setAccessToken(null);
     }
-  }
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    alert("Logged out successfully");
-    navigate("/");
   };
   return (
     <>
