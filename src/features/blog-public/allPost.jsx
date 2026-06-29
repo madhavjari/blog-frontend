@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import styles from "./post.module.css";
 import formatRelativeTime from "../../config/timestamp";
-import { Link } from "react-router";
+import { Link, useOutletContext } from "react-router";
+import checkUser from "../../config/checkUser";
 
 function AllPost() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState([]);
+  const { accessToken } = useOutletContext();
+  const username = checkUser(accessToken);
   useEffect(() => {
     fetch("https://blog-backend-production-e9b5.up.railway.app/api/posts", {
       method: "GET",
@@ -45,45 +48,55 @@ function AllPost() {
     );
   return (
     posts && (
-      <div className={styles.page}>
-        <div className={styles.shell}>
-          <section className={styles.hero}>
-            <p className={styles.eyebrow}>Blog Feed</p>
-            <h1 className={styles.title}>Latest posts</h1>
-            <p className={styles.subtitle}>
-              Recent writing from everyone on the blog.
-            </p>
-          </section>
-          <section className={styles.postsGrid}>
-            {posts.length === 0 ? (
-              <div className={styles.emptyState}>
-                No posts have been published yet.
-              </div>
-            ) : (
-              posts.map((post) => {
-                const author = post.user?.username || "Unknown author";
+      <>
+        <div className={styles.page}>
+          <div className={styles.shell}>
+            <section className={styles.hero}>
+              <p className={styles.eyebrow}>Blog Feed</p>
+              <h1 className={styles.title}>Latest posts</h1>
+              <p className={styles.subtitle}>
+                Recent writing from everyone on the blog.
+              </p>
+              {username !== null ? (
+                <Link
+                  to={`/${username}/newblog`}
+                  className={styles.createPostLink}
+                >
+                  Create Post
+                </Link>
+              ) : null}
+            </section>
+            <section className={styles.postsGrid}>
+              {posts.length === 0 ? (
+                <div className={styles.emptyState}>
+                  No posts have been published yet.
+                </div>
+              ) : (
+                posts.map((post) => {
+                  const author = post.user?.username || "Unknown author";
 
-                return (
-                  <article key={post.id} className={styles.postCard}>
-                    <div className={styles.postHeader}>
-                      <Link className={styles.postAuthor} to={`/${author}`}>
-                        {author}
+                  return (
+                    <article key={post.id} className={styles.postCard}>
+                      <div className={styles.postHeader}>
+                        <Link className={styles.postAuthor} to={`/${author}`}>
+                          {author}
+                        </Link>
+                        <time className={styles.postTime}>
+                          {formatRelativeTime(post.timestamp)}
+                        </time>
+                      </div>
+                      <Link to={`/posts/${post.id}`}>
+                        <h2 className={styles.postCardTitle}>{post.title}</h2>
                       </Link>
-                      <time className={styles.postTime}>
-                        {formatRelativeTime(post.timestamp)}
-                      </time>
-                    </div>
-                    <Link to={`/posts/${post.id}`}>
-                      <h2 className={styles.postCardTitle}>{post.title}</h2>
-                    </Link>
-                    <p className={styles.postCardContent}>{post.content}</p>
-                  </article>
-                );
-              })
-            )}
-          </section>
+                      <p className={styles.postCardContent}>{post.content}</p>
+                    </article>
+                  );
+                })
+              )}
+            </section>
+          </div>
         </div>
-      </div>
+      </>
     )
   );
 }

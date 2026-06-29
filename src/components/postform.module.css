@@ -1,0 +1,144 @@
+.formPage {
+  min-height: 100vh;
+  padding: 3rem 1.25rem 4rem;
+  background: #f7f3ee;
+  color: #2b211d;
+  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+}
+
+.formShell {
+  width: min(620px, 100%);
+  margin: 0 auto;
+}
+
+.formHero {
+  display: grid;
+  gap: 0.55rem;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 3px solid #f57c00;
+}
+
+.formEyebrow {
+  color: #e65100;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.formTitle {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: 1.2;
+  color: #2b211d;
+}
+
+.formCard {
+  padding: 1.75rem;
+  border: 1px solid #eadfd6;
+  border-left: 5px solid #f57c00;
+  border-radius: 4px;
+  background: #fffdfb;
+  box-shadow: 0 2px 8px rgba(75, 54, 33, 0.08);
+  display: grid;
+  gap: 1.25rem;
+}
+
+.fieldGroup {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #e65100;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid #eadfd6;
+  border-radius: 4px;
+  background: #f7f3ee;
+  color: #2b211d;
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.5;
+  box-sizing: border-box;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+  outline: none;
+}
+
+.input:focus,
+.textarea:focus {
+  border-color: #f57c00;
+  box-shadow: 0 0 0 3px rgba(245, 124, 0, 0.12);
+}
+
+.textarea {
+  min-height: 180px;
+  resize: vertical;
+}
+
+.errorText {
+  color: #c0392b;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.submitBtn {
+  width: 100%;
+  padding: 0.75rem;
+  background: #f57c00;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.submitBtn:hover:not(:disabled) {
+  background: #e65100;
+}
+
+.submitBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.denied {
+  padding: 1.25rem 1.35rem;
+  border: 1px solid #eadfd6;
+  border-left: 5px solid #f57c00;
+  border-radius: 4px;
+  background: #fffdfb;
+  color: #51453f;
+  box-shadow: 0 2px 8px rgba(75, 54, 33, 0.08);
+}
+
+@media (max-width: 640px) {
+  .formPage {
+    padding: 2rem 1rem 3rem;
+  }
+
+  .formTitle {
+    font-size: 1.65rem;
+  }
+
+  .formCard {
+    padding: 1.25rem 1.1rem;
+  }
+}

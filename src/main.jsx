@@ -10,6 +10,7 @@ import UniquePost from "./features/blog-public/uniquePost.jsx";
 import SignupForm from "./features/auth/signupForm.jsx";
 import AllPost from "./features/blog-public/allPost.jsx";
 import AuthProvider from "./AuthProvider.jsx";
+import PostForm from "./components/postForm.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -18,6 +19,7 @@ const router = createBrowserRouter([
       { index: true, element: <AllPost /> },
       { path: "/:username", element: <UserPost /> },
       { path: "/posts/:id", element: <UniquePost /> },
+      { path: "/:username/newblog", element: <PostForm /> },
     ],
   },
   {
