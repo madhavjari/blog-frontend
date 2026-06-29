@@ -3,20 +3,21 @@ import { useEffect, useState } from "react";
 import styles from "./post.module.css";
 import formatRelativeTime from "../../config/timestamp";
 import { Link } from "react-router";
+import { useOutletContext } from "react-router";
 
 export default function UniquePost() {
   const { id } = useParams();
+  const { accessToken } = useOutletContext();
   const [post, setPost] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const token = localStorage.getItem("token");
   useEffect(() => {
     fetch(
       `https://blog-backend-production-e9b5.up.railway.app/api/posts/${id}`,
       {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       },
     )
@@ -28,10 +29,11 @@ export default function UniquePost() {
       })
       .then((data) => {
         setPost(data.post || []);
+        setError(null);
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, [setPost, token, id]);
+  }, [setPost, accessToken, id]);
   if (loading)
     return (
       <div className={styles.loaderContainer}>
@@ -49,7 +51,7 @@ export default function UniquePost() {
         </div>
       </div>
     );
-  const author = post.user?.username || "Unknown author";
+  const author = post?.user || "Unknown author";
   return (
     <div className={styles.page}>
       <div className={styles.shell}>
@@ -59,12 +61,10 @@ export default function UniquePost() {
               {author}
             </Link>
             <time className={styles.postTime}>
-              {formatRelativeTime(post.timestamp)}
+              {formatRelativeTime(post.timeStamp)}
             </time>
           </div>
-          <Link to={`/posts/${post.id}`}>
-            <h2 className={styles.postCardTitle}>{post.title}</h2>
-          </Link>
+          <h2 className={styles.postCardTitle}>{post.title}</h2>
           <p className={styles.postCardContent}>{post.content}</p>
         </article>
       </div>
