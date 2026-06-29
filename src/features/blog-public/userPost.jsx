@@ -12,16 +12,14 @@ export default function UserPost() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   useEffect(() => {
-    const fetchOptions = {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    };
-
     fetch(
       `https://blog-backend-production-e9b5.up.railway.app/api/posts/user/${username}`,
-      fetchOptions,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
     )
       .then((res) => {
         if (!res.ok) throw new Error("User portfolio not found");

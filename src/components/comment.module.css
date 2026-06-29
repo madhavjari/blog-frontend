@@ -1,0 +1,118 @@
+.commentItem {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+}
+
+.commentAvatar {
+  flex: 0 0 auto;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: #f57c00;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.commentSection {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #eadfd6;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.commentBubble {
+  display: inline-block;
+  background: #f0ebe4;
+  border-radius: 0 12px 12px 12px;
+  padding: 0.45rem 0.85rem;
+  max-width: 100%;
+}
+
+.commentAuthor {
+  display: inline;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #e65100;
+  text-decoration: none;
+  margin-right: 0.35rem;
+}
+
+.commentContent {
+  display: inline;
+  margin: 0;
+  color: #51453f;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.commentTime {
+  display: block;
+  margin-top: 0.15rem;
+  margin-left: 0.25rem;
+  color: #a09288;
+  font-size: 0.68rem;
+}
+
+.commentForm {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+
+.commentInput {
+  flex: 1;
+  padding: 0.55rem 0.85rem;
+  border: 1px solid #eadfd6;
+  border-radius: 4px;
+  background: #f7f3ee;
+  color: #2b211d;
+  font-family: inherit;
+  font-size: 0.95rem;
+  outline: none;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+
+.commentInput:focus {
+  border-color: #f57c00;
+  box-shadow: 0 0 0 3px rgba(245, 124, 0, 0.12);
+}
+
+.commentBtn {
+  padding: 0.55rem 1.1rem;
+  background: #f57c00;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.commentBtn:hover:not(:disabled) {
+  background: #e65100;
+}
+
+.commentBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.errorText {
+  color: #c0392b;
+  font-size: 0.85rem;
+  margin: 0;
+}

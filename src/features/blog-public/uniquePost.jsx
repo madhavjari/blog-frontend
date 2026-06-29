@@ -4,6 +4,8 @@ import styles from "./post.module.css";
 import formatRelativeTime from "../../config/timestamp";
 import { Link } from "react-router";
 import { useOutletContext } from "react-router";
+import Comment from "../../components/comment";
+import CommentForm from "../../components/commentForm";
 
 export default function UniquePost() {
   const { id } = useParams();
@@ -11,6 +13,9 @@ export default function UniquePost() {
   const [post, setPost] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [comments, setComments] = useState([]);
+  const [commentError, setCommentError] = useState(null);
+
   useEffect(() => {
     fetch(
       `https://blog-backend-production-e9b5.up.railway.app/api/posts/${id}`,
@@ -34,6 +39,30 @@ export default function UniquePost() {
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
   }, [setPost, accessToken, id]);
+  useEffect(() => {
+    fetch(
+      `https://blog-backend-production-e9b5.up.railway.app/api/posts/${id}/comments`,
+      {
+        method: "GET",
+      },
+    )
+      .then((response) => {
+        if (response.status >= 400) {
+          console.log(response);
+          throw new Error("Bad request");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setComments(data.comments || []);
+        setCommentError(null);
+      })
+      .catch((error) => setCommentError(error));
+  }, [id, setComments]);
+
+  const handleCommentAdded = (newComment) => {
+    setComments((prev) => [...prev, newComment]);
+  };
   if (loading)
     return (
       <div className={styles.loaderContainer}>
@@ -51,7 +80,7 @@ export default function UniquePost() {
         </div>
       </div>
     );
-  const author = post?.user || "Unknown author";
+  const author = post.user?.username || "Unknown author";
   return (
     <div className={styles.page}>
       <div className={styles.shell}>
@@ -61,11 +90,13 @@ export default function UniquePost() {
               {author}
             </Link>
             <time className={styles.postTime}>
-              {formatRelativeTime(post.timeStamp)}
+              {formatRelativeTime(post.timestamp)}
             </time>
           </div>
           <h2 className={styles.postCardTitle}>{post.title}</h2>
           <p className={styles.postCardContent}>{post.content}</p>
+          <Comment comments={comments} error={commentError} />
+          <CommentForm postId={post.id} onCommentAdded={handleCommentAdded} />
         </article>
       </div>
     </div>
