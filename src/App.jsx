@@ -12,7 +12,7 @@ function App() {
         setAccessToken={setAccessToken}
         username={username}
       />
-      <Outlet context={{ accessToken }} />
+      <Outlet context={{ accessToken, username }} />
     </div>
   );
 }
