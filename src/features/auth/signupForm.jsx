@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styles from "./auth.module.css";
+import { useNavigate } from "react-router";
 
 export default function SignupForm() {
   const [username, setUsername] = useState("");
@@ -9,6 +10,7 @@ export default function SignupForm() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,7 +39,7 @@ export default function SignupForm() {
         throw new Error(data.message || "Invalid inputs");
       }
       alert("Registered successful!");
-      window.location.href = "/";
+      navigate("/");
     } catch (err) {
       setError(err.message);
     } finally {

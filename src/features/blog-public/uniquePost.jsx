@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 import styles from "./post.module.css";
 import formatRelativeTime from "../../config/timestamp";
@@ -10,7 +10,7 @@ import CommentForm from "../../components/commentForm";
 export default function UniquePost() {
   const { id } = useParams();
   const { accessToken } = useOutletContext();
-  const [post, setPost] = useState([]);
+  const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [comments, setComments] = useState([]);
@@ -38,7 +38,7 @@ export default function UniquePost() {
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, [setPost, accessToken, id]);
+  }, [accessToken, id]);
   useEffect(() => {
     fetch(
       `https://blog-backend-production-e9b5.up.railway.app/api/posts/${id}/comments`,
@@ -48,7 +48,6 @@ export default function UniquePost() {
     )
       .then((response) => {
         if (response.status >= 400) {
-          console.log(response);
           throw new Error("Bad request");
         }
         return response.json();

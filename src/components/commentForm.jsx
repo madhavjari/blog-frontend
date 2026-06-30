@@ -4,7 +4,7 @@ import styles from "./comment.module.css";
 
 export default function CommentForm({ postId, onCommentAdded }) {
   const [content, setContent] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const { accessToken } = useOutletContext();
 

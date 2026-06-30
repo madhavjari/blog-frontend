@@ -1,19 +1,26 @@
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 import styles from "./post.module.css";
 import formatRelativeTime from "../../config/timestamp";
 import { Link } from "react-router";
 import { useOutletContext } from "react-router";
+import BlogStatus from "../../components/blogStatus";
 
 export default function UserPost() {
-  const { username } = useParams();
-  const { accessToken } = useOutletContext();
+  const { username: user } = useParams();
+  const { username, accessToken } = useOutletContext();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const isEqual = username === user;
+  const handleStatusChange = (updatedPost) => {
+    setPosts((prev) =>
+      prev.map((p) => (p.id === updatedPost.id ? updatedPost : p)),
+    );
+  };
   useEffect(() => {
     fetch(
-      `https://blog-backend-production-e9b5.up.railway.app/api/posts/user/${username}`,
+      `https://blog-backend-production-e9b5.up.railway.app/api/posts/user/${user}`,
       {
         method: "GET",
         headers: {
@@ -31,7 +38,7 @@ export default function UserPost() {
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, [username, accessToken]);
+  }, [user, accessToken]);
   if (loading)
     return (
       <div className={styles.loaderContainer}>
@@ -54,7 +61,7 @@ export default function UserPost() {
       <div className={styles.shell}>
         <section className={styles.hero}>
           <p className={styles.eyebrow}>Author Archive</p>
-          <h1 className={styles.title}>{username}&apos;s posts</h1>
+          <h1 className={styles.title}>{user}&apos;s posts</h1>
           <p className={styles.subtitle}>
             All published writing from this author.
           </p>
@@ -68,21 +75,23 @@ export default function UserPost() {
             posts.map((post) => (
               <article key={post.id} className={styles.postCard}>
                 <div className={styles.postHeader}>
-                  <Link className={styles.postAuthor} to={`/${username}`}>
-                    {username}
+                  <Link className={styles.postAuthor} to={`/${user}`}>
+                    {user}
                   </Link>
-                  {post.published ? (
+                  <div className={styles.postUnpublished}>
+                    <p className={styles.postTime}>
+                      {isEqual ? (
+                        <BlogStatus
+                          post={post}
+                          accessToken={accessToken}
+                          onStatusChange={handleStatusChange}
+                        />
+                      ) : null}
+                    </p>
                     <time className={styles.postTime}>
                       {formatRelativeTime(post.timestamp)}
                     </time>
-                  ) : (
-                    <div className={styles.postUnpublished}>
-                      <p className={styles.postTime}>Unpublished</p>
-                      <time className={styles.postTime}>
-                        {formatRelativeTime(post.timestamp)}
-                      </time>
-                    </div>
-                  )}
+                  </div>
                 </div>
                 <Link to={`/posts/${post.id}`}>
                   <h2 className={styles.postCardTitle}>{post.title}</h2>

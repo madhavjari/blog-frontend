@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useOutletContext } from "react-router";
-import checkUser from "../config/checkUser";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router";
 import styles from "./postform.module.css";
@@ -8,9 +7,8 @@ import styles from "./postform.module.css";
 export default function PostForm() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const { accessToken } = useOutletContext();
-  const user = checkUser(accessToken);
-  const { username } = useParams();
+  const { username, accessToken } = useOutletContext();
+  const { username: user } = useParams();
   const areEqual = user === username;
   const navigate = useNavigate();
   const [error, setError] = useState(null);

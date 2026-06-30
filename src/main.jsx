@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router";
 //import UserPost from "./features/blog-public/userPost.jsx";
 import LoginForm from "./features/auth/loginForm.jsx";
 import "./index.css";
@@ -11,6 +11,7 @@ import SignupForm from "./features/auth/signupForm.jsx";
 import AllPost from "./features/blog-public/allPost.jsx";
 import AuthProvider from "./AuthProvider.jsx";
 import PostForm from "./components/postForm.jsx";
+import GuestRoute from "./features/auth/GuestRoute.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -23,12 +24,17 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/login",
-    element: <LoginForm />,
-  },
-  {
-    path: "/register",
-    element: <SignupForm />,
+    element: <GuestRoute />,
+    children: [
+      {
+        path: "/login",
+        element: <LoginForm />,
+      },
+      {
+        path: "/register",
+        element: <SignupForm />,
+      },
+    ],
   },
 ]);
 

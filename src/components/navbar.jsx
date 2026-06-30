@@ -1,11 +1,11 @@
 import "../App.css";
 import { Link } from "react-router";
 import { useNavigate } from "react-router-dom";
-import checkUser from "../config/checkUser";
+import useAuth from "../config/useAuth";
 
-export default function Navbar({ accessToken, setAccessToken }) {
+export default function Navbar() {
   const navigate = useNavigate();
-  const username = checkUser(accessToken);
+  const { setAccessToken, username } = useAuth();
 
   const handleLogout = async () => {
     try {
