@@ -5,6 +5,7 @@ import formatRelativeTime from "../../config/timestamp";
 import { Link } from "react-router";
 import { useOutletContext } from "react-router";
 import BlogStatus from "../../components/blogStatus";
+import DeletePost from "../../components/DeletePost";
 
 export default function UserPost() {
   const { username: user } = useParams();
@@ -17,6 +18,11 @@ export default function UserPost() {
     setPosts((prev) =>
       prev.map((p) => (p.id === updatedPost.id ? updatedPost : p)),
     );
+  };
+  const handleDelete = (id) => {
+    setPosts((prev) => {
+      return prev.filter((p) => p.id !== id);
+    });
   };
   useEffect(() => {
     fetch(
@@ -66,6 +72,11 @@ export default function UserPost() {
             All published writing from this author.
           </p>
         </section>
+        {isEqual ? (
+          <Link to={`/${username}/newblog`} className={styles.createPostLink}>
+            Create Post
+          </Link>
+        ) : null}
         <section className={styles.postsGrid}>
           {posts.length === 0 ? (
             <div className={styles.emptyState}>
@@ -79,15 +90,21 @@ export default function UserPost() {
                     {user}
                   </Link>
                   <div className={styles.postUnpublished}>
-                    <p className={styles.postTime}>
-                      {isEqual ? (
+                    {isEqual ? (
+                      <>
                         <BlogStatus
                           post={post}
                           accessToken={accessToken}
                           onStatusChange={handleStatusChange}
                         />
-                      ) : null}
-                    </p>
+                        <DeletePost
+                          post={post}
+                          accessToken={accessToken}
+                          onDelete={handleDelete}
+                        />
+                      </>
+                    ) : null}
+
                     <time className={styles.postTime}>
                       {formatRelativeTime(post.timestamp)}
                     </time>

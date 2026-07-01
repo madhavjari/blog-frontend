@@ -3,10 +3,11 @@ import { useEffect, useState } from "react";
 import styles from "./post.module.css";
 import formatRelativeTime from "../../config/timestamp";
 import { Link } from "react-router";
-import { useOutletContext } from "react-router";
+import { useOutletContext, useNavigate } from "react-router";
 import Comment from "../../components/comment";
 import CommentForm from "../../components/commentForm";
 import BlogStatus from "../../components/blogStatus";
+import DeletePost from "../../components/DeletePost";
 
 export default function UniquePost() {
   const { id } = useParams();
@@ -17,10 +18,13 @@ export default function UniquePost() {
   const [comments, setComments] = useState([]);
   const [commentError, setCommentError] = useState(null);
   const [isEqual, setIsEqual] = useState(false);
+  const navigate = useNavigate();
   const handleStatusChange = (updatedPost) => {
     setPost(updatedPost);
   };
-
+  const handleDelete = () => {
+    navigate(`/${username}`);
+  };
   useEffect(() => {
     fetch(
       `https://blog-backend-production-e9b5.up.railway.app/api/posts/${id}`,
@@ -31,18 +35,16 @@ export default function UniquePost() {
         },
       },
     )
-      .then((response) => {
-        if (response.status >= 400) {
-          setError("Post not found");
-        }
-        return response.json();
+      .then((res) => {
+        if (!res.ok) throw new Error("Post not found");
+        return res.json();
       })
       .then((data) => {
         setPost(data.post || []);
         setIsEqual(data.post.user.username === username);
         setError(null);
       })
-      .catch((error) => setError(error))
+      .catch((error) => setError(error.message))
       .finally(() => setLoading(false));
   }, [accessToken, id, username]);
   useEffect(() => {
@@ -96,11 +98,18 @@ export default function UniquePost() {
             </Link>
             <div className={styles.postUnpublished}>
               {isEqual ? (
-                <BlogStatus
-                  post={post}
-                  accessToken={accessToken}
-                  onStatusChange={handleStatusChange}
-                />
+                <>
+                  <BlogStatus
+                    post={post}
+                    accessToken={accessToken}
+                    onStatusChange={handleStatusChange}
+                  />
+                  <DeletePost
+                    post={post}
+                    accessToken={accessToken}
+                    onDelete={handleDelete}
+                  />
+                </>
               ) : null}
               <time className={styles.postTime}>
                 {formatRelativeTime(post.timestamp)}
