@@ -1,17 +1,19 @@
 import { useState } from "react";
 import Delete from "./Delete";
+import { useParams } from "react-router";
 
-export default function DeletePost({ post, accessToken, onDelete }) {
+export default function DeleteComment({ comment, accessToken, onDelete }) {
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const id = post.id;
+  const id = comment.id;
+  const { id: postId } = useParams();
   const handleClick = async () => {
     try {
       setLoading(true);
       setError(null);
       const response = await fetch(
-        `https://blog-backend-production-e9b5.up.railway.app/api/posts/${post.id}`,
+        `https://blog-backend-production-e9b5.up.railway.app/api/posts/${parseInt(postId)}/${comment.id}`,
         {
           method: "DELETE",
           credentials: "include",
@@ -22,7 +24,7 @@ export default function DeletePost({ post, accessToken, onDelete }) {
       );
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.message || "Error in changing post status");
+        throw new Error(data.message || "Error in deleting comment");
       }
       onDelete(id);
       setIsOpen(false);
@@ -36,7 +38,7 @@ export default function DeletePost({ post, accessToken, onDelete }) {
     <Delete
       setIsOpen={setIsOpen}
       isOpen={isOpen}
-      toDelete="post"
+      toDelete="comment"
       error={error}
       handleClick={handleClick}
       loading={loading}

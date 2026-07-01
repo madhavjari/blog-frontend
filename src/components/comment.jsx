@@ -1,9 +1,16 @@
 import formatRelativeTime from "../config/timestamp";
 import styles from "./comment.module.css";
 import { Link } from "react-router";
+import DeleteComment from "./DeleteComment";
 
-export default function Comment({ comments, error }) {
-  if (error) return <p> No comments on Unpublished Post</p>;
+export default function Comment({
+  comments,
+  error,
+  author,
+  accessToken,
+  onDelete,
+}) {
+  if (error) return <p> {error.message} </p>;
 
   return (
     <>
@@ -29,9 +36,18 @@ export default function Comment({ comments, error }) {
                     {comment.content}
                   </span>
                 </div>
-                <time className={styles.commentTime}>
-                  {formatRelativeTime(comment.timestamp)}
-                </time>
+                <div className={styles.commentMeta}>
+                  <time className={styles.commentTime}>
+                    {formatRelativeTime(comment.timestamp)}
+                  </time>
+                  {author ? (
+                    <DeleteComment
+                      accessToken={accessToken}
+                      comment={comment}
+                      onDelete={onDelete}
+                    />
+                  ) : null}
+                </div>
               </div>
             </div>
           ))}

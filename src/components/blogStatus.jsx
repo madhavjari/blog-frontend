@@ -39,17 +39,17 @@ export default function BlogStatus({ post, accessToken, onStatusChange }) {
   };
   return (
     <>
-      <button
-        onClick={() => setIsOpen(true)}
-        className={post.published ? styles.unpublishBtn : styles.publishBtn}
-      >
-        {post.published ? "Unpublish Post" : "Publish Post"}
-      </button>
       <ModalDialog
         open={isOpen}
-        onOpenChange={() => {
-          setIsOpen(false);
-        }}
+        onOpenChange={setIsOpen}
+        trigger={
+          <button
+            onClick={() => setIsOpen(true)}
+            className={post.published ? styles.unpublishBtn : styles.publishBtn}
+          >
+            {post.published ? "Unpublish Post" : "Publish Post"}
+          </button>
+        }
       >
         <DialogHeader>
           {post.published ? "Unpublish Post" : "Publish Post"}

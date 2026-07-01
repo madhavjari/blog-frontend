@@ -22,8 +22,16 @@ export default function UniquePost() {
   const handleStatusChange = (updatedPost) => {
     setPost(updatedPost);
   };
-  const handleDelete = () => {
+  const handlePostDelete = () => {
     navigate(`/${username}`);
+  };
+  const handleCommentDelete = (id) => {
+    setComments((prev) => {
+      return prev.filter((p) => p.id !== id);
+    });
+  };
+  const handleCommentAdded = (newComment) => {
+    setComments((prev) => [...prev, newComment]);
   };
   useEffect(() => {
     fetch(
@@ -67,9 +75,6 @@ export default function UniquePost() {
       .catch((error) => setCommentError(error));
   }, [id, setComments]);
 
-  const handleCommentAdded = (newComment) => {
-    setComments((prev) => [...prev, newComment]);
-  };
   if (loading)
     return (
       <div className={styles.loaderContainer}>
@@ -107,7 +112,7 @@ export default function UniquePost() {
                   <DeletePost
                     post={post}
                     accessToken={accessToken}
-                    onDelete={handleDelete}
+                    onDelete={handlePostDelete}
                   />
                 </>
               ) : null}
@@ -118,8 +123,16 @@ export default function UniquePost() {
           </div>
           <h2 className={styles.postCardTitle}>{post.title}</h2>
           <p className={styles.postCardContent}>{post.content}</p>
-          <Comment comments={comments} error={commentError} />
-          <CommentForm postId={post.id} onCommentAdded={handleCommentAdded} />
+          <Comment
+            comments={comments}
+            error={commentError}
+            author={isEqual}
+            accessToken={accessToken}
+            onDelete={handleCommentDelete}
+          />
+          {post.published ? (
+            <CommentForm postId={post.id} onCommentAdded={handleCommentAdded} />
+          ) : null}
         </article>
       </div>
     </div>
