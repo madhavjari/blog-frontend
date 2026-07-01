@@ -6,15 +6,20 @@ import { Link } from "react-router";
 import { useOutletContext } from "react-router";
 import Comment from "../../components/comment";
 import CommentForm from "../../components/commentForm";
+import BlogStatus from "../../components/blogStatus";
 
 export default function UniquePost() {
   const { id } = useParams();
-  const { accessToken } = useOutletContext();
+  const { username, accessToken } = useOutletContext();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [comments, setComments] = useState([]);
   const [commentError, setCommentError] = useState(null);
+  const [isEqual, setIsEqual] = useState(false);
+  const handleStatusChange = (updatedPost) => {
+    setPost(updatedPost);
+  };
 
   useEffect(() => {
     fetch(
@@ -34,11 +39,12 @@ export default function UniquePost() {
       })
       .then((data) => {
         setPost(data.post || []);
+        setIsEqual(data.post.user.username === username);
         setError(null);
       })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, [accessToken, id]);
+  }, [accessToken, id, username]);
   useEffect(() => {
     fetch(
       `https://blog-backend-production-e9b5.up.railway.app/api/posts/${id}/comments`,
@@ -88,9 +94,18 @@ export default function UniquePost() {
             <Link className={styles.postAuthor} to={`/${author}`}>
               {author}
             </Link>
-            <time className={styles.postTime}>
-              {formatRelativeTime(post.timestamp)}
-            </time>
+            <div className={styles.postUnpublished}>
+              {isEqual ? (
+                <BlogStatus
+                  post={post}
+                  accessToken={accessToken}
+                  onStatusChange={handleStatusChange}
+                />
+              ) : null}
+              <time className={styles.postTime}>
+                {formatRelativeTime(post.timestamp)}
+              </time>
+            </div>
           </div>
           <h2 className={styles.postCardTitle}>{post.title}</h2>
           <p className={styles.postCardContent}>{post.content}</p>
